@@ -5,21 +5,21 @@ const todoListUL = document.getElementById('todo-list');
 let allTodos = getTodos();
 updateTodoList();
 
-// Form submit
+
 todoForm.addEventListener('submit', function(e){
     e.preventDefault();
     addTodo();
 });
 
-// Add new todo
+
 function addTodo(){
     const todoText = todoInput.value.trim();
     if(todoText.length === 0) return;
 
     const todoObject = {
-        id: Date.now(), // unique ID
+        id: Date.now(), 
         text: todoText,
-        date: "",       // optional
+        date: "",      
         time: "",
         completed: false
     };
@@ -30,7 +30,7 @@ function addTodo(){
     todoInput.value = "";
 }
 
-// Update UI
+
 function updateTodoList() {
     todoListUL.innerHTML = "";
     allTodos.forEach(todo => {
@@ -39,7 +39,7 @@ function updateTodoList() {
     });
 }
 
-// Create each todo item
+
 function createTodoItem(todo){
     const todoLI = document.createElement('li');
     todoLI.className = "todo";
@@ -58,7 +58,7 @@ function createTodoItem(todo){
         <button class="delete-button">Delete</button>
     `;
 
-    // Toggle completed
+
     const checkbox = todoLI.querySelector('input[type="checkbox"]');
     checkbox.addEventListener('change', () => {
         todo.completed = checkbox.checked;
@@ -66,7 +66,7 @@ function createTodoItem(todo){
         saveTodos();
     });
 
-    // Delete task
+
     const deleteButton = todoLI.querySelector('.delete-button');
     deleteButton.addEventListener('click', () => {
         allTodos = allTodos.filter(t => t.id !== todo.id);
@@ -74,13 +74,11 @@ function createTodoItem(todo){
         updateTodoList();
     });
 
-    // Edit task inline
     const editButton = todoLI.querySelector('.edit-button');
     editButton.addEventListener('click', () => {
         const textSpan = todoLI.querySelector('.todo-text');
         const datetimeSpan = todoLI.querySelector('.todo-datetime');
 
-        // Create input fields
         const textInput = document.createElement('input');
         textInput.type = "text";
         textInput.value = todo.text;
@@ -94,14 +92,14 @@ function createTodoItem(todo){
         timeInput.type = "time";
         timeInput.value = todo.time;
 
-        // Replace spans with inputs
+
         todoLI.replaceChild(textInput, textSpan);
         todoLI.replaceChild(dateInput, datetimeSpan);
         todoLI.insertBefore(timeInput, editButton);
 
         editButton.textContent = "Save";
 
-        // Save changes
+ 
         editButton.onclick = () => {
             todo.text = textInput.value.trim() || todo.text;
             todo.date = dateInput.value;
@@ -114,12 +112,11 @@ function createTodoItem(todo){
     return todoLI;
 }
 
-// Save todos to localStorage
+
 function saveTodos(){
     localStorage.setItem("todos", JSON.stringify(allTodos));
 }
 
-// Load todos from localStorage
 function getTodos(){
     return JSON.parse(localStorage.getItem("todos") || "[]");
 }
